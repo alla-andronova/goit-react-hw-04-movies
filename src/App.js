@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { lazy, Suspense } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import Navigation from './components/Navigation/Navigation';
+import Navigaion from './components/Navigation/Navigation';
+// import HomeView from './views/HomeView';
+// import MoviesView from './views/MoviesView';
+// import NotFoundView from './views/NotFoundView';
+// import MovieDetailsView from './views/MovieDetailsView';
+
+const HomeView = lazy(() => import('./views/HomeView.js'));
+const MoviesView = lazy(() => import('./views/MoviesView.js'));
+const NotFoundView = lazy(() => import('./views/NotFoundView.js'));
+const MovieDetailsView = lazy(() => import('./views/MovieDetailsView.js'));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navigation />
+      <Suspense fallback={<Navigaion />}>
+        <Switch>
+          <Route path="/" exact>
+            <HomeView />
+          </Route>
+
+          <Route exact path="/movies">
+            <MoviesView />
+          </Route>
+
+          <Route path="/movies/:movieId">
+            <MovieDetailsView />
+          </Route>
+
+          <Route>
+            <NotFoundView />
+          </Route>
+        </Switch>
+      </Suspense>
+    </>
   );
 }
 
